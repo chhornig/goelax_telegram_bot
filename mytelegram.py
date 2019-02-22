@@ -62,16 +62,17 @@ def handle_updates(updates):
             user = update["message"]["from"]["id"]
             response = "Ich verstehe nicht."
             keyboard = None
-            thread = dbhandler.get_thread(user)
-            if text == "/start":
-                response = telegram_update.introduction(user)
-            elif text == "/get_absagen":
+            telegram_update.user_exists(user)
+            #thread = dbhandler.get_thread(user)
+            #if text == "/start":
+                #response = telegram_update.introduction(user)
+            if text == "/get_absagen":
                 response = telegram_update.get_absagen(user)
             elif text == "/next":
                 response = telegram_update.next(user)
             elif text == "/activate":
                 response = telegram_update.activate(user)
-            elif thread == None:
+            '''elif thread == None:
                 if text.startswith("/absage"):
                     keyboard, response = telegram_update.absage(user)
                 elif text.startswith("/next_trainings"):
@@ -87,7 +88,7 @@ def handle_updates(updates):
             elif thread == "position":
                 response = telegram_update.thread_position(user, text)
             elif thread == "absage":
-                response = telegram_update.thread_absage(user, text)
+                response = telegram_update.thread_absage(user, text)'''
             send_message(response, chat, keyboard)
         except KeyError:
             pass

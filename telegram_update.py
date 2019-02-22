@@ -2,11 +2,16 @@ import dbhandler
 import json
 from datetime import date, datetime
 
+def user_exists(user):
+    if dbhandler.user_exists(user):
+        pass
+    else:
+        dbhandler.add_user(user)
 
 def introduction(user):
     response = "Hallo, dies ist der Trainingsbot. \nHier kannst Du dich fuer das Training an- und abmelden. \nUm zu starten, gib bitte deinen Namen ein."
-    dbhandler.set_thread(user, "start")
     dbhandler.add_user(user)
+    dbhandler.set_thread(user, "start")
     return response
 
 def thread_start(user, text):

@@ -18,7 +18,7 @@ import re
 Integer = mysql.INTEGER
 
 global engine
-engine = sqlalchemy.create_engine('mysql+pymysql://root:telegrambot@localhost:3306/telegram')
+engine = sqlalchemy.create_engine('mysql+pymysql://root:01AovcMVD2wVkzvnMIWl@localhost:3306/telegram')
 
 Session = sessionmaker(bind=engine)
 
@@ -52,6 +52,13 @@ class Absagen(Base):
     training_id  = Column(Integer)
     absagezeitpunkt = Column(DATETIME(timezone=True), server_default=func.now())
 
+def user_exists(T_id):
+    session = Session()
+    if session.query(Player).filter(Player.Telegram_user == T_id).first():
+        return True
+    else:
+        return False
+
 def new_training(training_date):
     new_training = Training(date=training_date)
     session = Session()
@@ -64,14 +71,13 @@ def new_training(training_date):
 
 def add_user(T_id):
     session = Session()
-    new_user = session.query(Player).filter(Player.Telegram_user == T_id).first()
-    if new_user == None:
-        new_user = Player(Telegram_user = T_id)
-        session.add(new_user)
-        session.commit()
-        return True
-    else:
-        return False
+    #new_user = session.query(Player).filter(Player.Telegram_user == T_id).first()
+    #new_user == None
+    new_user = Player(Telegram_user = T_id)
+    session.add(new_user)
+    new_thread = Thread(Telegram_user = T_id)
+    session.add(new_thread)
+    session.commit()
 
 def add_name(name, T_id):
     session = Session()
